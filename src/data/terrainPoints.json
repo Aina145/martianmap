@@ -1,0 +1,502 @@
+[
+ {
+  "id": 1,
+  "lat": 18.44447,
+  "lon": 77.45088,
+  "elev": -2580.0,
+  "slope": 1.2,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 2,
+  "lat": 18.44445,
+  "lon": 77.45,
+  "elev": -2580.0,
+  "slope": 1.5,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 3,
+  "lat": 18.44442,
+  "lon": 77.44911,
+  "elev": -2579.0,
+  "slope": 2.0,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 4,
+  "lat": 18.44439,
+  "lon": 77.44822,
+  "elev": -2578.0,
+  "slope": 2.2,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 5,
+  "lat": 18.44436,
+  "lon": 77.44733,
+  "elev": -2577.0,
+  "slope": 2.1,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 6,
+  "lat": 18.44433,
+  "lon": 77.44644,
+  "elev": -2575.0,
+  "slope": 3.0,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 7,
+  "lat": 18.4443,
+  "lon": 77.44555,
+  "elev": -2574.0,
+  "slope": 3.5,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 8,
+  "lat": 18.44427,
+  "lon": 77.44466,
+  "elev": -2572.0,
+  "slope": 4.0,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 9,
+  "lat": 18.44424,
+  "lon": 77.44377,
+  "elev": -2570.0,
+  "slope": 4.2,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 10,
+  "lat": 18.44421,
+  "lon": 77.44288,
+  "elev": -2568.0,
+  "slope": 4.5,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 11,
+  "lat": 18.44418,
+  "lon": 77.44199,
+  "elev": -2565.0,
+  "slope": 5.1,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 12,
+  "lat": 18.44415,
+  "lon": 77.4411,
+  "elev": -2562.0,
+  "slope": 5.8,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 13,
+  "lat": 18.44412,
+  "lon": 77.44021,
+  "elev": -2558.0,
+  "slope": 6.2,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 14,
+  "lat": 18.44409,
+  "lon": 77.43932,
+  "elev": -2553.0,
+  "slope": 7.0,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 15,
+  "lat": 18.44406,
+  "lon": 77.43843,
+  "elev": -2547.0,
+  "slope": 7.8,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 16,
+  "lat": 18.44403,
+  "lon": 77.43754,
+  "elev": -2540.0,
+  "slope": 8.5,
+  "soil": "bedrock",
+  "mineral": "phyllosilicates",
+  "science": true
+ },
+ {
+  "id": 17,
+  "lat": 18.444,
+  "lon": 77.43665,
+  "elev": -2532.0,
+  "slope": 9.2,
+  "soil": "bedrock",
+  "mineral": "phyllosilicates",
+  "science": true
+ },
+ {
+  "id": 18,
+  "lat": 18.4397,
+  "lon": 77.4356,
+  "elev": -2522.0,
+  "slope": 10.5,
+  "soil": "bedrock",
+  "mineral": "phyllosilicates",
+  "science": true
+ },
+ {
+  "id": 19,
+  "lat": 18.4394,
+  "lon": 77.4347,
+  "elev": -2510.0,
+  "slope": 11.8,
+  "soil": "compact_regolith",
+  "mineral": "phyllosilicates",
+  "science": true
+ },
+ {
+  "id": 20,
+  "lat": 18.4391,
+  "lon": 77.4338,
+  "elev": -2495.0,
+  "slope": 13.2,
+  "soil": "compact_regolith",
+  "mineral": "phyllosilicates",
+  "science": true
+ },
+ {
+  "id": 21,
+  "lat": 18.4388,
+  "lon": 77.4329,
+  "elev": -2480.0,
+  "slope": 14.0,
+  "soil": "compact_regolith",
+  "mineral": "phyllosilicates",
+  "science": true
+ },
+ {
+  "id": 22,
+  "lat": 18.4385,
+  "lon": 77.432,
+  "elev": -2462.0,
+  "slope": 15.5,
+  "soil": "aeolian_dunes",
+  "mineral": "phyllosilicates",
+  "science": false
+ },
+ {
+  "id": 23,
+  "lat": 18.4382,
+  "lon": 77.4311,
+  "elev": -2445.0,
+  "slope": 16.2,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 24,
+  "lat": 18.4379,
+  "lon": 77.4302,
+  "elev": -2430.0,
+  "slope": 15.8,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 25,
+  "lat": 18.4376,
+  "lon": 77.4293,
+  "elev": -2420.0,
+  "slope": 14.1,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 26,
+  "lat": 18.4373,
+  "lon": 77.4284,
+  "elev": -2412.0,
+  "slope": 12.5,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 27,
+  "lat": 18.437,
+  "lon": 77.4275,
+  "elev": -2406.0,
+  "slope": 10.2,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 28,
+  "lat": 18.4367,
+  "lon": 77.4266,
+  "elev": -2402.0,
+  "slope": 8.0,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 29,
+  "lat": 18.4364,
+  "lon": 77.4257,
+  "elev": -2400.0,
+  "slope": 5.5,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 30,
+  "lat": 18.4361,
+  "lon": 77.4248,
+  "elev": -2398.0,
+  "slope": 3.2,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 31,
+  "lat": 18.4358,
+  "lon": 77.4239,
+  "elev": -2397.0,
+  "slope": 2.0,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 32,
+  "lat": 18.4355,
+  "lon": 77.423,
+  "elev": -2396.0,
+  "slope": 1.5,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 33,
+  "lat": 18.4352,
+  "lon": 77.4221,
+  "elev": -2395.0,
+  "slope": 1.0,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 34,
+  "lat": 18.4349,
+  "lon": 77.4212,
+  "elev": -2395.0,
+  "slope": 0.8,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 35,
+  "lat": 18.4346,
+  "lon": 77.4203,
+  "elev": -2394.0,
+  "slope": 0.5,
+  "soil": "bedrock",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 36,
+  "lat": 18.4343,
+  "lon": 77.4194,
+  "elev": -2392.0,
+  "slope": 1.2,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 37,
+  "lat": 18.434,
+  "lon": 77.4185,
+  "elev": -2389.0,
+  "slope": 2.8,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 38,
+  "lat": 18.4337,
+  "lon": 77.4176,
+  "elev": -2384.0,
+  "slope": 4.5,
+  "soil": "compact_regolith",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 39,
+  "lat": 18.4334,
+  "lon": 77.4167,
+  "elev": -2377.0,
+  "slope": 6.2,
+  "soil": "bedrock",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 40,
+  "lat": 18.433,
+  "lon": 77.4158,
+  "elev": -2368.0,
+  "slope": 8.1,
+  "soil": "bedrock",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 41,
+  "lat": 18.432,
+  "lon": 77.408,
+  "elev": -2357.0,
+  "slope": 9.8,
+  "soil": "bedrock",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 42,
+  "lat": 18.435,
+  "lon": 77.406,
+  "elev": -2345.0,
+  "slope": 11.2,
+  "soil": "bedrock",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 43,
+  "lat": 18.44,
+  "lon": 77.404,
+  "elev": -2332.0,
+  "slope": 12.5,
+  "soil": "compact_regolith",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 44,
+  "lat": 18.445,
+  "lon": 77.402,
+  "elev": -2318.0,
+  "slope": 13.8,
+  "soil": "compact_regolith",
+  "mineral": "carbonates",
+  "science": false
+ },
+ {
+  "id": 45,
+  "lat": 18.45,
+  "lon": 77.4,
+  "elev": -2302.0,
+  "slope": 14.9,
+  "soil": "compact_regolith",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 46,
+  "lat": 18.455,
+  "lon": 77.3995,
+  "elev": -2285.0,
+  "slope": 15.4,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 47,
+  "lat": 18.46,
+  "lon": 77.3992,
+  "elev": -2270.0,
+  "slope": 14.2,
+  "soil": "aeolian_dunes",
+  "mineral": "none",
+  "science": false
+ },
+ {
+  "id": 48,
+  "lat": 18.465,
+  "lon": 77.399,
+  "elev": -2260.0,
+  "slope": 11.0,
+  "soil": "bedrock",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 49,
+  "lat": 18.47,
+  "lon": 77.399,
+  "elev": -2252.0,
+  "slope": 8.5,
+  "soil": "bedrock",
+  "mineral": "carbonates",
+  "science": true
+ },
+ {
+  "id": 50,
+  "lat": 18.471,
+  "lon": 77.399,
+  "elev": -2250.0,
+  "slope": 2.1,
+  "soil": "bedrock",
+  "mineral": "carbonates",
+  "science": true
+ }
+]

@@ -1,0 +1,6 @@
+{
+  "name": "RED ARES — Martian Map",
+  "description": "Terrain-aware Mars route planning prototype for Jezero Crater with slope hazard assessment, Dijkstra/A* routing, and simulated astronaut helmet HUD.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

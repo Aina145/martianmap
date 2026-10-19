@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-orbitron: 'Orbitron', monospace, sans-serif;
+    --font-rajdhani: 'Rajdhani', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-inter: 'Inter', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-inter);
+    background-color: #0B1220;
+    color: #E6EDF3;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-heading {
+    font-family: var(--font-orbitron);
+  }
+
+  .font-subheading {
+    font-family: var(--font-rajdhani);
+  }
+
+  .font-code {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0B1220;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Hazard Hatch Pattern (accessible non-color-only encoding) */
+.hazard-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(229, 72, 77, 0.45),
+    rgba(229, 72, 77, 0.45) 8px,
+    rgba(229, 72, 77, 0.15) 8px,
+    rgba(229, 72, 77, 0.15) 16px
+  );
+}
+
+.caution-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(245, 197, 66, 0.4),
+    rgba(245, 197, 66, 0.4) 6px,
+    rgba(245, 197, 66, 0.1) 6px,
+    rgba(245, 197, 66, 0.1) 12px
+  );
+}
+
+/* HUD Effects */
+.hud-scanline {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0.25)
+  );
+  background-size: 100% 4px;
+}
+
+.hud-vignette {
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8), inset 0 0 200px rgba(11, 18, 32, 0.95);
+}
+
+.hud-visor-curve {
+  border-radius: 40px;
+  border: 1px solid rgba(77, 227, 240, 0.3);
+}
+
+.glow-cyan {
+  text-shadow: 0 0 8px rgba(77, 227, 240, 0.7);
+}
+
+.glow-hazard {
+  text-shadow: 0 0 8px rgba(229, 72, 77, 0.7);
+}
+
+.glow-safe {
+  text-shadow: 0 0 8px rgba(61, 220, 132, 0.7);
+}
+
+/* Leaflet dark styling adjustments */
+.leaflet-container {
+  background: #080D17 !important;
+  font-family: inherit;
+}
+.leaflet-bar a {
+  background-color: #131C2E !important;
+  color: #4DE3F0 !important;
+  border-color: #243552 !important;
+}
+.leaflet-bar a:hover {
+  background-color: #1B273F !important;
+}
