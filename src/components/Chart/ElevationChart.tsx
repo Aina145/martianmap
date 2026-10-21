@@ -10,6 +10,7 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  LineController,
   Title,
   Tooltip,
   Legend,
@@ -19,7 +20,7 @@ import {
 } from 'chart.js';
 import { RouteResult } from '../../types/mars';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, LineController, Title, Tooltip, Legend, Filler);
 
 interface ElevationChartProps {
   primaryRoute: RouteResult | null;
