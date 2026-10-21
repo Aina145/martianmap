@@ -43,7 +43,7 @@ export const RightInspector: React.FC<RightInspectorProps> = ({ selectedId, acti
   const band = node ? slopeBand(node.slope) : 0;
 
   return (
-    <div className="h-full flex flex-col bg-[#0E1626] border-l border-[#243552] overflow-y-auto">
+    <div className="w-[400px] shrink-0 h-full flex flex-col bg-[#0E1626] border-l border-[#243552] overflow-y-auto">
       {/* Node inspector */}
       <div className="p-3.5 border-b border-[#243552]">
         <div className="text-[10px] tracking-wider text-slate-400 font-heading font-semibold uppercase mb-2 flex items-center gap-1.5">

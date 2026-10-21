@@ -92,6 +92,19 @@ export const MarsMap: React.FC<MarsMapProps> = ({
     map.fitBounds(bounds);
     mapInstanceRef.current = map;
 
+    // Leaflet measures the container once at init. If the layout settles
+    // afterwards (panels/fonts), vector layers project off-pane — the map
+    // looks empty even though everything drew. Re-measure + reframe once
+    // layout is final, and keep the size in sync when the container resizes.
+    const reframe = () => {
+      map.invalidateSize();
+      map.fitBounds(bounds);
+    };
+    const raf = requestAnimationFrame(reframe);
+    const timer = setTimeout(reframe, 300);
+    const ro = new ResizeObserver(() => map.invalidateSize());
+    ro.observe(mapContainerRef.current);
+
     terrainLayerRef.current = L.layerGroup().addTo(map);
     scienceLayerRef.current = L.layerGroup().addTo(map);
     dangerLayerRef.current = L.layerGroup().addTo(map);
@@ -103,6 +116,9 @@ export const MarsMap: React.FC<MarsMapProps> = ({
       if (modeRef.current === 'inspect') onSelectNode(null);
     });
     return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timer);
+      ro.disconnect();
       map.remove();
       mapInstanceRef.current = null;
     };
