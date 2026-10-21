@@ -88,7 +88,19 @@ export const MarsMap: React.FC<MarsMapProps> = ({
     const map = L.map(mapContainerRef.current, {
       zoomControl: false,
       attributionControl: false,
+      // Trek's default028mm grid is equirectangular (2:1) — EPSG4326 matches
+      // it, so the imagery aligns with the lat/lon vector overlays.
+      crs: L.CRS.EPSG4326,
+      minZoom: 2,
+      maxZoom: 11,
     });
+    // NASA Mars Trek basemap — Viking MDIM 2.1 colour mosaic (real imagery
+    // under the vector overlays). Tiles verified live 2026-10-21; if Trek is
+    // unreachable the map simply falls back to the dark background.
+    L.tileLayer(
+      'https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/{z}/{y}/{x}.jpg',
+      { maxNativeZoom: 7, maxZoom: 11, opacity: 0.9 }
+    ).addTo(map);
     map.fitBounds(bounds);
     mapInstanceRef.current = map;
 
@@ -346,7 +358,7 @@ export const MarsMap: React.FC<MarsMapProps> = ({
       </div>
       <div className="absolute bottom-3 right-3 z-[500] flex items-center gap-1.5 text-[10px] font-mono text-slate-500">
         <Layers className="w-3.5 h-3.5" />
-        <span>NO TILES — VECTOR ONLY</span>
+        <span>VIKING MDIM21 · NASA TREK</span>
         <AlertTriangle className="w-3.5 h-3.5 text-[#E5484D]" />
       </div>
     </div>
