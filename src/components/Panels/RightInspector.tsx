@@ -1,7 +1,7 @@
 /**
  * RED ARES — Right Inspector Panel
  * Terrain Node Inspector, Route Analysis metrics, "Why this route?" explanation.
- * Data: Natasha's 50 real points. Cost: C(t) = (C_terrain × μ) + W_science.
+ * Data: Natasha's 50 real points. Cost: Total_Cost = (C_terrain × μ) × α_science.
  */
 
 import React from 'react';
@@ -14,7 +14,7 @@ import {
   slopeBand,
   terrainCost,
   MU_FRICTION,
-  scienceBonus,
+  scienceFactor,
   o2LitersPerMin,
 } from '../../data/terrain';
 import { ElevationChart } from '../Chart/ElevationChart';
@@ -72,19 +72,19 @@ export const RightInspector: React.FC<RightInspectorProps> = ({ selectedId, acti
             <Row k="Mineral" v={node.mineral} icon={<Atom className="w-3 h-3" />} />
             <Row
               k="Science"
-              v={node.science ? 'TARGET (−3.5 bonus)' : '—'}
+              v={node.science ? 'TARGET (×0.3 cost)' : '—'}
               icon={<FlaskConical className="w-3 h-3" />}
               hot={node.science}
             />
             <div className="pt-1.5 mt-1.5 border-t border-[#243552]/60">
-              <div className="text-[10px] text-slate-500 mb-1">C(t) = (C_terrain × μ) + W_science</div>
+              <div className="text-[10px] text-slate-500 mb-1">Total_Cost = (C_terrain × μ) × α_science</div>
               <Row
                 k="C_terrain"
                 v={blocked ? '99999 (hard block)' : terrainCost(node).toFixed(1)}
                 hot={blocked}
               />
-              {!blocked && <Row k="Per-meter factor" v={`×${(terrainCost(node) * MU_FRICTION[node.soil]).toFixed(2)}`} />}
-              {!blocked && <Row k="W_science" v={scienceBonus(node).toFixed(1)} hot={node.science} />}
+              {!blocked && <Row k="Per-meter factor" v={`×${(terrainCost(node) * MU_FRICTION[node.soil] * scienceFactor(node)).toFixed(2)}`} />}
+              {!blocked && <Row k="α_science" v={`×${scienceFactor(node).toFixed(1)}`} hot={node.science} />}
               <Row k="O₂ est." v={blocked ? '— (no EVA)' : `${o2LitersPerMin(node.slope)} L/min`} />
             </div>
             {blocked && (

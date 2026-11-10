@@ -1,6 +1,6 @@
 /**
  * Unit tests for RED ARES Route Engine (graph version)
- * Data: Natasha's 50 real points. Cost: C(t) = (C_terrain × μ) + W_science.
+ * Data: Natasha's 50 real points. Cost: Total_Cost = (C_terrain × μ) × α_science.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -59,8 +59,8 @@ describe("Natasha's cost matrix (exact values)", () => {
     expect(edgeCost(risk, 100, 'lower-slope')).toBe(1500); // 100×5.0×3.0
   });
 
-  it('science-stop: adds W_science = −3.5 on target nodes only', () => {
-    expect(edgeCost(sci, 100, 'science-stop')).toBe(96.5); // 100 − 3.5
+  it('science-stop: multiplies by α_science = 0.3 on target nodes only', () => {
+    expect(edgeCost(sci, 100, 'science-stop')).toBe(30); // 100 × 0.3
     expect(edgeCost(flat, 100, 'science-stop')).toBe(100); // no bonus
   });
 

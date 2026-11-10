@@ -127,7 +127,7 @@ export const DataAboutScreen: React.FC<DataAboutScreenProps> = ({ onBack }) => {
                     15 real science targets from the matrix: P16–P21 phyllosilicates (Target ALPHA), P38–P43 & P48–P50 carbonates (Target BETA).
                   </td>
                   <td className="py-3 px-4 text-slate-400">
-                    CRISM FRT0000B23C mineralogy + team rule matrix. Science-stop routes earn W = −3.5 per target node.
+                    CRISM FRT0000B23C mineralogy + team rule matrix. Science-stop routes cost ×0.3 (α_science) per target node.
                   </td>
                 </tr>
               </tbody>
@@ -146,14 +146,14 @@ export const DataAboutScreen: React.FC<DataAboutScreenProps> = ({ onBack }) => {
 
           <div className="bg-[#0B1220] p-4 rounded-lg border border-[#243552] font-code text-xs text-[#4DE3F0] leading-relaxed overflow-x-auto">
             <div className="text-white font-bold text-sm mb-1">
-              C(t) = (C_terrain × μ_friction) + W_science
+              Total_Cost = (C_terrain × μ_friction) × α_science
             </div>
             <div className="text-slate-400 text-[11px] mt-2 space-y-1">
-              <div>• <b>Edge cost u → v</b>: dist(u,v) × C_terrain(v) × μ(v) + W(v), summed over the corridor (ΣC(t)).</div>
+              <div>• <b>Edge cost u → v</b>: dist(u,v) × C_terrain(v) × μ(v) × α(v), summed over the corridor (ΣTotal_Cost).</div>
               <div>• <b>C_terrain</b>: 1.0 for 0–5° (nominal) · 2.5 for 5.1–12° (strain) · 5.0 for 12.1–15° (risk) · <b className="text-rose-400">99999 for &gt;15° — hard blocked, node removed from graph</b>.</div>
               <div>• <b>μ_friction</b>: bedrock ×1.0 · compact regolith ×1.4 · aeolian dunes ×3.0.</div>
-              <div>• <b>W_science</b>: −3.5 for the 15 NASA sample-target nodes, else 0 (active in Science-Stop mode).</div>
-              <div>• <b>Modes</b>: Lower-Slope minimizes ΣC(t) · Shortest uses pure distance (baseline) · Science-Stop adds W_science. Blocked nodes are excluded in every mode.</div>
+              <div>• <b>α_science</b>: 0.3 for the 15 NASA sample-target nodes, else 1.0 (active in Science-Stop mode).</div>
+              <div>• <b>Modes</b>: Lower-Slope minimizes ΣTotal_Cost · Shortest uses pure distance (baseline) · Science-Stop multiplies by α_science (×0.3 on targets). Blocked nodes are excluded in every mode.</div>
             </div>
           </div>
         </section>
