@@ -3,7 +3,7 @@
  * NASA Space Apps 2026: "Interplanetary Survival Guide: Martian Map"
  *
  * Data model: graph of Natasha's 50 real terrain points (jezero_terrain_matrix.csv).
- * Cost model: C(t) = (C_terrain × μ_friction) + W_science  (Scientific Dossier §3)
+ * Cost model: Total_Cost = (C_terrain × μ_friction) × α_science  (Scientific Dossier §3)
  */
 
 export type SlopeCategory = 'safe' | 'caution' | 'hazard' | 'blocked';

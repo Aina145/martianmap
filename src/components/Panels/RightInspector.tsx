@@ -1,6 +1,7 @@
 /**
  * RED ARES — Right Inspector Panel
  * Tactical Telemetry, Route Metrics, Elevation Profile, and direct Launch HUD CTA.
+ * Data: Natasha's 50 real points. Cost: Total_Cost = (C_terrain × μ) × α_science.
  */
 
 import React, { useState } from 'react';
@@ -13,7 +14,7 @@ import {
   slopeBand,
   terrainCost,
   MU_FRICTION,
-  scienceBonus,
+  scienceFactor,
   o2LitersPerMin,
   TerrainPoint,
 } from '../../data/terrain';

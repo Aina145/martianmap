@@ -6,10 +6,10 @@
  * the graph — hard constraint, never routed through.
  *
  * COST MODEL — Scientific Dossier §3 (exact, do not invent other weights):
- *   C(t) = (C_terrain × μ_friction) + W_science
+ *   Total_Cost = (C_terrain × μ_friction) × α_science
  *   C_terrain: 1.0 (0–5°) | 2.5 (5.1–12°) | 5.0 (12.1–15°) | 99999 (>15°, blocked)
  *   μ: bedrock 1.0 | compact_regolith 1.4 | aeolian_dunes 3.0
- *   W_science: −3.5 for science-target nodes, else 0
+ *   α_science: 0.3 for science-target nodes, else 1.0
  */
 
 import { RouteResult, RoutePoint, RouteMetrics, RouteType } from '../types/mars';
@@ -18,11 +18,11 @@ import {
   TerrainPoint,
   terrainCost,
   MU_FRICTION,
-  scienceBonus,
+  scienceFactor,
   nodeCostFactor,
   haversineM,
   slopeBand,
-  W_SCIENCE,
+  ALPHA_SCIENCE,
 } from '../data/terrain';
 
 // Priority Queue implementation with Binary Min-Heap
@@ -112,13 +112,14 @@ export function edgeCost(
   if (cTerr >= 99999) return Infinity; // hard constraint
   if (routeType === 'shortest') return distM;
   const base = distM * cTerr * MU_FRICTION[v.soil];
-  if (routeType === 'science-stop') return base + scienceBonus(v);
+  if (routeType === 'science-stop') return base * scienceFactor(v);
   return base; // 'lower-slope'
 }
 
 /**
  * Admissible A* heuristic: straight-line haversine × minimum per-meter factor.
- * science-stop can earn at most 15 × (−3.5) bonus, hence the correction.
+ * science-stop minimum per-meter factor is 0.3 (min C_terrain 1.0 × min μ 1.0 × α 0.3),
+ * so h × α never overestimates the true cost.
  */
 function heuristic(nodeId: number, destId: number, graph: TerrainGraph, routeType: RouteType): number {
   const n = graph.nodes.get(nodeId)!;
@@ -126,7 +127,7 @@ function heuristic(nodeId: number, destId: number, graph: TerrainGraph, routeTyp
   const h = haversineM(n.lat, n.lon, d.lat, d.lon);
   if (routeType === 'shortest') return h;
   if (routeType === 'lower-slope') return h * 1.0;
-  return Math.max(0, h * 1.0 + W_SCIENCE * 15);
+  return h * ALPHA_SCIENCE;
 }
 
 /**
@@ -212,7 +213,7 @@ function analyzeRoute(
   let whySentence: string;
   if (routeType === 'lower-slope') {
     whySentence =
-      `Natasha's C(t)=(C_terrain×μ)+W_science minimized: corridor keeps ${path.length} nodes ` +
+      `Natasha's Total_Cost=(C_terrain×μ)×α_science minimized: corridor keeps ${path.length} nodes ` +
       `at avg slope ${avgSlope}° (max ${maxSlope.toFixed(1)}°), hard-avoids all >15° blocked zones ` +
       `over ${distKm} km. Total mission cost ΣC(t) = ${totalCost.toFixed(1)}.`;
   } else if (routeType === 'shortest') {
@@ -223,7 +224,7 @@ function analyzeRoute(
   } else {
     const n = visitedScienceIds.length;
     whySentence =
-      `Science-weighted corridor (W_science = −3.5) diverts through ${n} NASA sample target${n === 1 ? '' : 's'} ` +
+      `Science-weighted corridor (α_science = 0.3) diverts through ${n} NASA sample target${n === 1 ? '' : 's'} ` +
       `(P${visitedScienceIds.join(', P')}) at avg slope ${avgSlope}°, safety ${safetyScore}/100, ` +
       `ΣC(t) = ${totalCost.toFixed(1)}.`;
   }
@@ -397,4 +398,4 @@ function makeResult(
 }
 
 // Re-export for panels that display the matrix
-export { nodeCostFactor, terrainCost, MU_FRICTION, W_SCIENCE };
+export { nodeCostFactor, terrainCost, MU_FRICTION, ALPHA_SCIENCE, scienceFactor };

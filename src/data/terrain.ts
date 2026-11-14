@@ -6,7 +6,7 @@
  * → Delta Front → Margin Carbonate Unit).
  *
  * COST MODEL (Scientific Dossier §3 — DO NOT invent other weights):
- *   C(t) = (C_terrain × μ_friction) + W_science
+ *   Total_Cost = (C_terrain × μ_friction) × α_science
  */
 
 import rawPoints from './terrainPoints.json';
@@ -53,11 +53,13 @@ export const MU_FRICTION: Record<TerrainPoint['soil'], number> = {
   aeolian_dunes: 3.0,
 };
 
-// Science bonus: −3.5 for nodes flagged as science targets
-export const W_SCIENCE = -3.5;
+// Science attenuation: science-target nodes cost 30% (α = 0.3), else full cost (α = 1.0).
+// Dijkstra/A* require non-negative weights, so the old −3.5 bonus is replaced by
+// this positive multiplicative factor. Applied per flagged node.
+export const ALPHA_SCIENCE = 0.3;
 
-export function scienceBonus(p: TerrainPoint): number {
-  return p.science ? W_SCIENCE : 0;
+export function scienceFactor(p: TerrainPoint): number {
+  return p.science ? ALPHA_SCIENCE : 1.0;
 }
 
 /** Per-meter cost factor of ENTERING node v (Natasha's formula, without distance). */

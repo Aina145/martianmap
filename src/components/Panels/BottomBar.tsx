@@ -44,7 +44,7 @@ export const BottomBar: React.FC<BottomBarProps> = ({ hoveredId }) => {
           DATA: <span className="text-slate-300">jezero_terrain_matrix.csv · 50 PTS · REAL</span>
         </span>
         <span>
-          C(t) = <span className="text-slate-300">(C_terrain × μ) + W_science</span>
+          Total_Cost = <span className="text-slate-300">(C_terrain × μ) × α_science</span>
         </span>
       </div>
     </div>

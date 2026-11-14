@@ -1,7 +1,7 @@
 /**
  * RED ARES — Mission Control Screen
  * Primary operational workbench integrating LeftControls, MarsMap, RightInspector, and BottomBar.
- * Routes over Natasha's 50 REAL terrain points. C(t) = (C_terrain × μ) + W_science.
+ * Routes over Natasha's 50 REAL terrain points. Total_Cost = (C_terrain × μ) × α_science.
  */
 
 import React, { useState } from 'react';

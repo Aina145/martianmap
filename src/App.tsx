@@ -4,7 +4,7 @@
  * Main Application Orchestrator & State Container
  *
  * Data: Natasha's 50 REAL terrain points (jezero_terrain_matrix.csv).
- * Routing: graph A-star/Dijkstra with C(t) = (C_terrain x mu) + W_science.
+ * Routing: graph A-star/Dijkstra with Total_Cost = (C_terrain x mu) x α_science.
  */
 
 import React, { useState, useMemo, useEffect } from 'react';
