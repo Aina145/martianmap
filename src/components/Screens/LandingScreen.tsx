@@ -15,16 +15,19 @@ import {
   Layers,
   Sparkles,
   Info,
+  Globe,
 } from 'lucide-react';
 
 interface LandingScreenProps {
   onStartPlanning: () => void;
   onOpenAbout: () => void;
+  onOpenGlobe?: () => void;
 }
 
 export const LandingScreen: React.FC<LandingScreenProps> = ({
   onStartPlanning,
   onOpenAbout,
+  onOpenGlobe,
 }) => {
   return (
     <div className="min-h-full flex flex-col bg-[#0B1220] text-[#E6EDF3] relative overflow-hidden">
@@ -52,6 +55,15 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
+          {onOpenGlobe && (
+            <button
+              onClick={onOpenGlobe}
+              className="px-3 py-1.5 rounded-lg border border-[#243552] hover:border-[#4DE3F0] text-[#4DE3F0] hover:text-white text-xs font-mono tracking-wide transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm"
+            >
+              <Globe className="w-3.5 h-3.5 text-rose-400" />
+              <span>3D Mars Globe</span>
+            </button>
+          )}
           <button
             onClick={onOpenAbout}
             className="px-3 py-1.5 rounded-lg border border-[#243552] hover:border-slate-500 text-slate-300 hover:text-white text-xs font-subheading tracking-wide transition-colors cursor-pointer"
@@ -97,6 +109,15 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
               <span>Launch Mission Control</span>
               <ArrowRight className="w-4 h-4" />
             </button>
+            {onOpenGlobe && (
+              <button
+                onClick={onOpenGlobe}
+                className="px-5 py-3 rounded-lg bg-[#182844] hover:bg-[#1E3358] border border-[#4DE3F0]/60 text-[#4DE3F0] font-heading text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-cyan-950/40 cursor-pointer"
+              >
+                <Globe className="w-4 h-4 text-rose-400" />
+                <span>Explore 3D Mars Globe</span>
+              </button>
+            )}
             <button
               onClick={onOpenAbout}
               className="px-5 py-3 rounded-lg bg-[#131C2E] hover:bg-[#1E293B] border border-[#243552] text-slate-200 font-subheading text-sm font-semibold tracking-wide flex items-center gap-2 transition-colors cursor-pointer"

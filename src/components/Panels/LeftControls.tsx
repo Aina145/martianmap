@@ -1,6 +1,10 @@
 /**
  * RED ARES — Left Controls Panel
- * Region selector, layer toggles, route mode radio, legend, calculate button.
+ * Streamlined, hackathon-ready operational console:
+ * - 1-Click Mission Scenario Presets
+ * - Clean Waypoint Assignment (Start & Destination)
+ * - Routing Strategy Selection
+ * - Layer visibility toggles & slope legend
  */
 
 import React from 'react';
@@ -8,15 +12,18 @@ import { LayerSettings, RouteType } from '../../types/mars';
 import {
   Layers,
   MapPin,
-  Mountain,
   Navigation,
   ShieldAlert,
   Sparkles,
-  Info,
-  Radio,
+  ArrowRight,
   Sliders,
-  Check,
+  CheckCircle2,
+  AlertTriangle,
+  Compass,
+  ArrowUpDown,
+  Zap,
 } from 'lucide-react';
+import { sound } from '../../engine/sound';
 
 interface LeftControlsProps {
   layers: LayerSettings;
@@ -45,178 +52,134 @@ export const LeftControls: React.FC<LeftControlsProps> = ({
   isCalculating,
   onApplyPreset,
 }) => {
-  const isReadyToCalculate = startId !== null && destId !== null;
+  const isReady = startId !== null && destId !== null;
 
   return (
-    <aside className="w-80 h-full bg-[#131C2E] border-r border-[#243552] flex flex-col overflow-y-auto z-10 select-none">
-      {/* Region Selector */}
-      <div className="p-3.5 border-b border-[#243552]">
-        <div className="text-[10px] tracking-wider text-[#4DE3F0] font-heading font-semibold uppercase mb-1 flex items-center justify-between">
-          <span>OPERATIONAL THEATRE</span>
-          <span className="text-[9px] bg-[#1E293B] text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/30">
-            ONLINE
+    <aside className="w-80 h-full bg-[#0D1524] border-r border-[#243552] flex flex-col overflow-y-auto select-none z-10 font-sans">
+      {/* 1. Mission Presets (Instant 1-Click for Hackathon Demo) */}
+      <div className="p-4 border-b border-[#243552] bg-[#111B2E]">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#4DE3F0] uppercase tracking-wider">
+            <Zap className="w-3.5 h-3.5" />
+            <span>1-CLICK MISSION DEMOS</span>
+          </div>
+          <span className="text-[9px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-1.5 py-0.5 rounded">
+            READY
           </span>
-        </div>
-        <div className="relative">
-          <select
-            className="w-full bg-[#0B1220] border border-[#243552] text-white text-xs rounded-md px-2.5 py-2 font-subheading tracking-wide focus:outline-none focus:border-[#4DE3F0]"
-            defaultValue="jezero"
-          >
-            <option value="jezero">Jezero Crater (Active AOI — 100 km²)</option>
-            <option value="gale" disabled>
-              Gale Crater (Locked — Phase 2)
-            </option>
-            <option value="valles" disabled>
-              Valles Marineris (Locked — Phase 3)
-            </option>
-          </select>
-        </div>
-        <div className="flex items-center gap-1.5 mt-2 text-[10px] text-slate-400 font-code">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#3DDC84]"></span>
-          <span>18.42° N, 77.45° E • Elev: -2580m</span>
-        </div>
-      </div>
-
-      {/* Layer Toggles */}
-      <div className="p-3.5 border-b border-[#243552]">
-        <div className="text-[10px] tracking-wider text-slate-400 font-heading font-semibold uppercase mb-2 flex items-center gap-1.5">
-          <Layers className="w-3.5 h-3.5 text-[#4DE3F0]" />
-          <span>CARTOGRAPHIC LAYERS</span>
-        </div>
-
-        <div className="space-y-1.5">
-          {/* Hillshade */}
-          <label className="flex items-center justify-between p-2 rounded bg-[#0B1220]/60 hover:bg-[#0B1220] border border-[#243552]/70 cursor-pointer transition-colors text-xs">
-            <div className="flex items-center gap-2">
-              <Mountain className="w-3.5 h-3.5 text-[#C1440E]" />
-              <div>
-                <div className="text-slate-200">Terrain Nodes (50)</div>
-                <div className="text-[9px] text-slate-500 font-code">real CSV points</div>
-              </div>
-            </div>
-            <input
-              type="checkbox"
-              checked={layers.terrain}
-              onChange={() => onToggleLayer('terrain')}
-              className="accent-[#4DE3F0] w-3.5 h-3.5 rounded"
-            />
-          </label>
-
-          {/* Slope Hazard Overlay */}
-          <label className="flex items-center justify-between p-2 rounded bg-[#0B1220]/60 hover:bg-[#0B1220] border border-[#243552]/70 cursor-pointer transition-colors text-xs">
-            <div className="flex items-center gap-2">
-              <ShieldAlert className="w-3.5 h-3.5 text-[#E5484D]" />
-              <div>
-                <div className="text-slate-200">Blocked Zones (&gt;15°)</div>
-                <div className="text-[9px] text-slate-500 font-code">hard constraint</div>
-              </div>
-            </div>
-            <input
-              type="checkbox"
-              checked={layers.danger}
-              onChange={() => onToggleLayer('danger')}
-              className="accent-[#E5484D] w-3.5 h-3.5 rounded"
-            />
-          </label>
-
-          {/* Rocks */}
-          <label className="flex items-center justify-between p-2 rounded bg-[#0B1220]/60 hover:bg-[#0B1220] border border-[#243552]/70 cursor-pointer transition-colors text-xs">
-            <div className="flex items-center gap-2">
-              <span className="w-3.5 h-3.5 rounded-sm bg-slate-600 flex items-center justify-center text-[9px] text-slate-300">
-                ■
-              </span>
-              <div>
-                <span className="text-slate-200">Graph Edges</span>
-                <div className="text-[9px] text-slate-500 font-code">corridor mesh</div>
-              </div>
-            </div>
-            <input
-              type="checkbox"
-              checked={layers.route}
-              onChange={() => onToggleLayer('route')}
-              className="accent-[#4DE3F0] w-3.5 h-3.5 rounded"
-            />
-          </label>
-
-          {/* POIs */}
-          <label className="flex items-center justify-between p-2 rounded bg-[#0B1220]/60 hover:bg-[#0B1220] border border-[#243552]/70 cursor-pointer transition-colors text-xs">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#4DE3F0]" />
-              <span className="text-slate-200">Science Targets (15)</span>
-            </div>
-            <input
-              type="checkbox"
-              checked={layers.science}
-              onChange={() => onToggleLayer('science')}
-              className="accent-[#4DE3F0] w-3.5 h-3.5 rounded"
-            />
-          </label>
-        </div>
-      </div>
-
-      {/* Slope Classification Legend */}
-      <div className="p-3.5 border-b border-[#243552] bg-[#0B1220]/40">
-        <div className="text-[10px] tracking-wider text-slate-400 font-heading font-semibold uppercase mb-2">
-          SLOPE HAZARD RULES & LEGEND
-        </div>
-        <div className="space-y-1.5 text-xs font-code">
-          <div className="flex items-center justify-between p-1.5 rounded bg-[#131C2E] border border-emerald-900/40">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-sm bg-[#3DDC84] inline-block shadow-sm shadow-emerald-500/50" />
-              <span className="text-emerald-300 font-medium">Nominal</span>
-            </div>
-            <span className="text-[11px] text-slate-400">0–5° · C=1.0</span>
-          </div>
-
-          <div className="flex items-center justify-between p-1.5 rounded bg-[#131C2E] border border-amber-900/40 caution-hatch">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-sm bg-[#F5C542] inline-block" />
-              <span className="text-amber-300 font-medium">Strain</span>
-            </div>
-            <span className="text-[11px] text-slate-300">5.1–12° · C=2.5</span>
-          </div>
-
-          <div className="flex items-center justify-between p-1.5 rounded bg-[#131C2E] border border-rose-900/40 hazard-hatch">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-sm bg-[#E5484D] inline-block" />
-              <span className="text-orange-300 font-medium">Risk</span>
-            </div>
-            <span className="text-[11px] text-slate-300">12.1–15° · C=5.0</span>
-          </div>
-
-          <div className="flex items-center justify-between p-1.5 rounded bg-[#131C2E] border border-rose-900/40 hazard-hatch">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-sm bg-[#E5484D] inline-block" />
-              <span className="text-rose-300 font-medium">Blocked</span>
-            </div>
-            <span className="text-[11px] text-slate-300">&gt; 15° · C=99999</span>
-          </div>
-
-          <div className="flex items-center justify-between p-1.5 rounded bg-[#131C2E] border border-slate-700">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-sm bg-[#1E293B] border border-slate-500 inline-block" />
-              <span className="text-slate-400">Soil friction μ</span>
-            </div>
-            <span className="text-[10px] text-slate-300">1.0 / 1.4 / 3.0</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Route Type Radio */}
-      <div className="p-3.5 border-b border-[#243552]">
-        <div className="text-[10px] tracking-wider text-slate-400 font-heading font-semibold uppercase mb-2 flex items-center justify-between">
-          <span>ROUTING CRITERIA</span>
-          <span className="text-[9px] text-[#4DE3F0] font-code">Rule-based</span>
         </div>
 
         <div className="space-y-2">
-          {/* Lower Slope (Default) */}
-          <div
-            onClick={() => onChangeRouteType('lower-slope')}
-            className={`p-2.5 rounded-lg border cursor-pointer transition-all ${
+          {/* Preset 1 */}
+          <button
+            onClick={() => {
+              sound.playCompute();
+              onApplyPreset(1, 41, 'science-stop');
+            }}
+            className={`w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer group ${
+              startId === 1 && destId === 41
+                ? 'bg-[#182844] border-[#4DE3F0] shadow-md shadow-cyan-950/60'
+                : 'bg-[#0B1220]/70 border-[#243552] hover:border-slate-500'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-xs text-white group-hover:text-[#4DE3F0] transition-colors">
+                Landing → Delta Front
+              </span>
+              <span className="text-[10px] text-cyan-400 font-mono">TARGET ALPHA</span>
+            </div>
+            <div className="text-[11px] text-slate-400 mt-0.5">
+              Traverse to ancient clay riverbed · P1 to P41
+            </div>
+          </button>
+
+          {/* Preset 2 */}
+          <button
+            onClick={() => {
+              sound.playCompute();
+              onApplyPreset(1, 50, 'lower-slope');
+            }}
+            className={`w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer group ${
+              startId === 1 && destId === 50
+                ? 'bg-[#182844] border-[#3DDC84] shadow-md shadow-emerald-950/60'
+                : 'bg-[#0B1220]/70 border-[#243552] hover:border-slate-500'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-xs text-white group-hover:text-[#3DDC84] transition-colors">
+                Full Crater Transect
+              </span>
+              <span className="text-[10px] text-emerald-400 font-mono">TARGET BETA</span>
+            </div>
+            <div className="text-[11px] text-slate-400 mt-0.5">
+              Safe slope route to Margin Carbonate · P1 to P50
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Waypoint Coordinates Assignment */}
+      <div className="p-4 border-b border-[#243552]">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-[#4DE3F0]" />
+            <span>WAYPOINTS ASSIGNMENT</span>
+          </span>
+          <span className="text-[10px] text-slate-400 font-mono">50 Real Points</span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          {/* Start Point */}
+          <div className="bg-[#0B1220] p-2 rounded-lg border border-[#243552] text-xs">
+            <div className="flex items-center gap-1 text-[10px] font-mono font-bold text-[#3DDC84] mb-1">
+              <span className="w-2 h-2 rounded-full bg-[#3DDC84] inline-block animate-ping"></span>
+              <span>START (A)</span>
+            </div>
+            <div className="font-mono font-bold text-white text-sm">
+              {startId ? `POINT P${startId}` : 'Not Set'}
+            </div>
+            <div className="text-[10px] text-slate-400 truncate mt-0.5">
+              {startId === 1 ? 'Octavia Butler Site' : `Point #${startId || '--'}`}
+            </div>
+          </div>
+
+          {/* Destination Point */}
+          <div className="bg-[#0B1220] p-2 rounded-lg border border-[#243552] text-xs">
+            <div className="flex items-center gap-1 text-[10px] font-mono font-bold text-[#E5484D] mb-1">
+              <span className="w-2 h-2 rounded-full bg-[#E5484D] inline-block"></span>
+              <span>DEST (B)</span>
+            </div>
+            <div className="font-mono font-bold text-white text-sm">
+              {destId ? `POINT P${destId}` : 'Not Set'}
+            </div>
+            <div className="text-[10px] text-slate-400 truncate mt-0.5">
+              {destId === 50 ? 'Margin Carbonate' : destId === 41 ? 'Delta Front' : `Point #${destId || '--'}`}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-2 text-[10px] font-mono text-slate-400 text-center bg-[#0B1220]/60 py-1 rounded border border-[#243552]/60">
+          💡 Click any node on the map to place Start or Dest
+        </div>
+      </div>
+
+      {/* 3. Routing Strategy Selector */}
+      <div className="p-4 border-b border-[#243552]">
+        <div className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+          <span>ROUTING CRITERIA</span>
+          <span className="text-[10px] text-[#4DE3F0] font-mono">NASA Spec</span>
+        </div>
+
+        <div className="space-y-2">
+          {/* Lower Slope (Recommended) */}
+          <button
+            onClick={() => {
+              sound.playClick();
+              onChangeRouteType('lower-slope');
+            }}
+            className={`w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer ${
               routeType === 'lower-slope'
-                ? 'bg-[#0B1220] border-[#3DDC84] shadow-sm shadow-emerald-950'
-                : 'bg-[#0B1220]/40 border-[#243552] hover:border-slate-600'
+                ? 'bg-[#0F231D] border-[#3DDC84] shadow-md shadow-emerald-950/60'
+                : 'bg-[#0B1220]/60 border-[#243552] hover:border-slate-600'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -226,28 +189,29 @@ export const LeftControls: React.FC<LeftControlsProps> = ({
                     routeType === 'lower-slope' ? 'border-[#3DDC84]' : 'border-slate-500'
                   }`}
                 >
-                  {routeType === 'lower-slope' && (
-                    <div className="w-2 h-2 rounded-full bg-[#3DDC84]" />
-                  )}
+                  {routeType === 'lower-slope' && <div className="w-2 h-2 rounded-full bg-[#3DDC84]" />}
                 </div>
-                <span className="text-xs font-semibold text-white">Lower Slope</span>
+                <span className="font-bold text-xs text-white">Lower Slope Corridor</span>
               </div>
-              <span className="text-[9px] bg-emerald-950/70 text-emerald-400 px-1.5 py-0.5 rounded font-code border border-emerald-800">
+              <span className="text-[9px] font-mono font-bold bg-[#3DDC84]/20 text-[#3DDC84] px-1.5 py-0.5 rounded border border-[#3DDC84]/40">
                 RECOMMENDED
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1 pl-5 leading-tight">
-              Minimizes Σ C(t)=(C_terrain×μ)+W over real nodes. Hard-avoids &gt;15° blocked zones.
+            <p className="text-[11px] text-slate-300 mt-1 pl-5 leading-snug">
+              Minimizes spacesuit strain, strictly avoids &gt;15° rollover zones.
             </p>
-          </div>
+          </button>
 
-          {/* Shortest */}
-          <div
-            onClick={() => onChangeRouteType('shortest')}
-            className={`p-2.5 rounded-lg border cursor-pointer transition-all ${
+          {/* Shortest Route */}
+          <button
+            onClick={() => {
+              sound.playClick();
+              onChangeRouteType('shortest');
+            }}
+            className={`w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer ${
               routeType === 'shortest'
-                ? 'bg-[#0B1220] border-[#F5C542] shadow-sm shadow-amber-950'
-                : 'bg-[#0B1220]/40 border-[#243552] hover:border-slate-600'
+                ? 'bg-[#2B2313] border-[#F5C542] shadow-md shadow-amber-950/60'
+                : 'bg-[#0B1220]/60 border-[#243552] hover:border-slate-600'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -257,26 +221,29 @@ export const LeftControls: React.FC<LeftControlsProps> = ({
                     routeType === 'shortest' ? 'border-[#F5C542]' : 'border-slate-500'
                   }`}
                 >
-                  {routeType === 'shortest' && (
-                    <div className="w-2 h-2 rounded-full bg-[#F5C542]" />
-                  )}
+                  {routeType === 'shortest' && <div className="w-2 h-2 rounded-full bg-[#F5C542]" />}
                 </div>
-                <span className="text-xs font-semibold text-white">Shortest Route</span>
+                <span className="font-bold text-xs text-white">Direct Shortest Route</span>
               </div>
-              <span className="text-[9px] text-slate-400 font-code">BASELINE</span>
+              <span className="text-[9px] font-mono text-amber-400 bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-800">
+                HIGH RISK
+              </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1 pl-5 leading-tight">
-              Direct Euclidean distance minimization only. Ignores slope penalties.
+            <p className="text-[11px] text-slate-300 mt-1 pl-5 leading-snug">
+              Direct geometric line. Traverses steeper slopes for faster transit.
             </p>
-          </div>
+          </button>
 
           {/* Science Stop */}
-          <div
-            onClick={() => onChangeRouteType('science-stop')}
-            className={`p-2.5 rounded-lg border cursor-pointer transition-all ${
+          <button
+            onClick={() => {
+              sound.playClick();
+              onChangeRouteType('science-stop');
+            }}
+            className={`w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer ${
               routeType === 'science-stop'
-                ? 'bg-[#0B1220] border-[#4DE3F0] shadow-sm shadow-cyan-950'
-                : 'bg-[#0B1220]/40 border-[#243552] hover:border-slate-600'
+                ? 'bg-[#102331] border-[#4DE3F0] shadow-md shadow-cyan-950/60'
+                : 'bg-[#0B1220]/60 border-[#243552] hover:border-slate-600'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -286,40 +253,42 @@ export const LeftControls: React.FC<LeftControlsProps> = ({
                     routeType === 'science-stop' ? 'border-[#4DE3F0]' : 'border-slate-500'
                   }`}
                 >
-                  {routeType === 'science-stop' && (
-                    <div className="w-2 h-2 rounded-full bg-[#4DE3F0]" />
-                  )}
+                  {routeType === 'science-stop' && <div className="w-2 h-2 rounded-full bg-[#4DE3F0]" />}
                 </div>
-                <span className="text-xs font-semibold text-white">Science Stop Corridor</span>
+                <span className="font-bold text-xs text-white">Science Stop Corridor</span>
               </div>
-              <span className="text-[9px] text-cyan-400 font-code">MULTI-GOAL</span>
+              <span className="text-[9px] font-mono text-[#4DE3F0] bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800">
+                15 POIS
+              </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1 pl-5 leading-tight">
-              Applies negative cost bonus to route along team-selected science POIs.
+            <p className="text-[11px] text-slate-300 mt-1 pl-5 leading-snug">
+              Prioritizes clay smectites and carbonate minerals for sample collection.
             </p>
-          </div>
+          </button>
         </div>
 
-        {/* Algorithm Solver Toggle */}
-        <div className="mt-3 flex items-center justify-between text-xs pt-2 border-t border-[#243552]/60">
-          <span className="text-slate-400 font-code text-[11px]">SOLVER ENGINE:</span>
+        {/* Algorithm solver toggle */}
+        <div className="mt-3 pt-2.5 border-t border-[#243552]/70 flex items-center justify-between text-xs font-mono">
+          <span className="text-slate-400 text-[11px]">SOLVER:</span>
           <div className="flex gap-1 bg-[#0B1220] p-0.5 rounded border border-[#243552]">
             <button
-              onClick={() => onChangeAlgorithm('A*')}
-              className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
-                algorithm === 'A*'
-                  ? 'bg-[#4DE3F0] text-[#0B1220] font-bold'
-                  : 'text-slate-400 hover:text-white'
+              onClick={() => {
+                sound.playClick();
+                onChangeAlgorithm('A*');
+              }}
+              className={`px-2 py-0.5 rounded text-[10px] font-bold transition-colors cursor-pointer ${
+                algorithm === 'A*' ? 'bg-[#4DE3F0] text-[#0B1220]' : 'text-slate-400 hover:text-white'
               }`}
             >
-              A* (Heuristic)
+              A* Heuristic
             </button>
             <button
-              onClick={() => onChangeAlgorithm('Dijkstra')}
-              className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
-                algorithm === 'Dijkstra'
-                  ? 'bg-[#4DE3F0] text-[#0B1220] font-bold'
-                  : 'text-slate-400 hover:text-white'
+              onClick={() => {
+                sound.playClick();
+                onChangeAlgorithm('Dijkstra');
+              }}
+              className={`px-2 py-0.5 rounded text-[10px] font-bold transition-colors cursor-pointer ${
+                algorithm === 'Dijkstra' ? 'bg-[#4DE3F0] text-[#0B1220]' : 'text-slate-400 hover:text-white'
               }`}
             >
               Dijkstra
@@ -328,80 +297,88 @@ export const LeftControls: React.FC<LeftControlsProps> = ({
         </div>
       </div>
 
-      {/* Preset Missions */}
-      <div className="p-3.5 border-b border-[#243552]">
-        <div className="text-[10px] tracking-wider text-slate-400 font-heading font-semibold uppercase mb-2">
-          MISSION SCENARIO PRESETS
+      {/* 4. Quick Layer Filters */}
+      <div className="p-4 border-b border-[#243552]">
+        <div className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-[#4DE3F0]" />
+            <span>MAP LAYERS</span>
+          </div>
         </div>
-        <div className="space-y-1.5">
+
+        <div className="grid grid-cols-2 gap-1.5 text-xs font-mono">
           <button
-            onClick={() => onApplyPreset(1, 41, 'science-stop')}
-            className="w-full text-left p-2 rounded bg-[#0B1220]/60 hover:bg-[#0B1220] border border-[#243552] text-xs transition-colors group"
+            onClick={() => {
+              sound.playClick();
+              onToggleLayer('terrain');
+            }}
+            className={`p-1.5 rounded border text-left flex items-center justify-between cursor-pointer transition-colors ${
+              layers.terrain ? 'bg-[#182844] border-[#4DE3F0]/60 text-white' : 'bg-[#0B1220] border-[#243552] text-slate-500'
+            }`}
           >
-            <div className="font-semibold text-slate-200 group-hover:text-[#4DE3F0]">
-              Landing → Delta Front (Target ALPHA)
-            </div>
-            <div className="text-[10px] text-slate-400 font-code">
-              P1 Octavia Butler → P41 Delta Front
-            </div>
+            <span>50 Nodes</span>
+            <span className={layers.terrain ? 'text-[#4DE3F0]' : 'text-slate-600'}>●</span>
           </button>
 
           <button
-            onClick={() => onApplyPreset(1, 50, 'lower-slope')}
-            className="w-full text-left p-2 rounded bg-[#0B1220]/60 hover:bg-[#0B1220] border border-[#243552] text-xs transition-colors group"
+            onClick={() => {
+              sound.playClick();
+              onToggleLayer('danger');
+            }}
+            className={`p-1.5 rounded border text-left flex items-center justify-between cursor-pointer transition-colors ${
+              layers.danger ? 'bg-[#2A1820] border-rose-500/60 text-white' : 'bg-[#0B1220] border-[#243552] text-slate-500'
+            }`}
           >
-            <div className="font-semibold text-slate-200 group-hover:text-[#4DE3F0]">
-              Full Transect (Target BETA)
-            </div>
-            <div className="text-[10px] text-slate-400 font-code">
-              P1 Landing → P50 Margin Carbonate
-            </div>
+            <span>&gt;15° Hazards</span>
+            <span className={layers.danger ? 'text-rose-400' : 'text-slate-600'}>▲</span>
+          </button>
+
+          <button
+            onClick={() => {
+              sound.playClick();
+              onToggleLayer('science');
+            }}
+            className={`p-1.5 rounded border text-left flex items-center justify-between cursor-pointer transition-colors ${
+              layers.science ? 'bg-[#102331] border-cyan-500/60 text-white' : 'bg-[#0B1220] border-[#243552] text-slate-500'
+            }`}
+          >
+            <span>Science POIs</span>
+            <span className={layers.science ? 'text-cyan-400' : 'text-slate-600'}>✦</span>
+          </button>
+
+          <button
+            onClick={() => {
+              sound.playClick();
+              onToggleLayer('route');
+            }}
+            className={`p-1.5 rounded border text-left flex items-center justify-between cursor-pointer transition-colors ${
+              layers.route ? 'bg-[#182844] border-slate-500 text-white' : 'bg-[#0B1220] border-[#243552] text-slate-500'
+            }`}
+          >
+            <span>Corridor Mesh</span>
+            <span className={layers.route ? 'text-slate-300' : 'text-slate-600'}>—</span>
           </button>
         </div>
       </div>
 
-      {/* Action CTA & Instructions */}
-      <div className="p-3.5 mt-auto bg-[#0B1220]">
-        <div className="bg-[#131C2E] p-2.5 rounded-lg border border-[#243552] mb-3">
-          <div className="text-[11px] font-semibold text-slate-300 flex items-center gap-1.5 mb-1.5">
-            <Info className="w-3.5 h-3.5 text-[#4DE3F0]" />
-            <span>WAYPOINT ASSIGNMENT</span>
-          </div>
-          <div className="space-y-1 text-[11px] font-code">
-            <div className="flex items-center justify-between text-slate-400">
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-[#3DDC84]"></span>
-                <span>START (A):</span>
-              </span>
-              <span className={startId ? 'text-white' : 'text-slate-600'}>
-                {startId ? `P${startId} — node` : 'Click Map to Set'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-slate-400">
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-[#E5484D]"></span>
-                <span>DESTINATION (B):</span>
-              </span>
-              <span className={destId ? 'text-white' : 'text-slate-600'}>
-                {destId ? `P${destId} — node` : 'Click Map to Set'}
-              </span>
-            </div>
-          </div>
-        </div>
-
+      {/* 5. Calculate Route CTA Button */}
+      <div className="p-4 mt-auto bg-[#0B1220] border-t border-[#243552]">
         <button
-          onClick={onCalculateRoute}
-          disabled={!isReadyToCalculate || isCalculating}
-          className={`w-full py-2.5 px-3 rounded-lg font-heading text-xs uppercase tracking-wider font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
-            isReadyToCalculate
-              ? 'bg-[#4DE3F0] hover:bg-[#38b2bd] text-[#0B1220] shadow-cyan-950/80 cursor-pointer'
+          onClick={() => {
+            sound.playCompute();
+            onCalculateRoute();
+          }}
+          disabled={!isReady || isCalculating}
+          className={`w-full py-3 px-4 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl cursor-pointer ${
+            isReady && !isCalculating
+              ? 'bg-gradient-to-r from-[#4DE3F0] to-[#38b2bd] text-[#0B1220] shadow-cyan-950/80 hover:brightness-110 active:scale-95'
               : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed'
           }`}
         >
           {isCalculating ? (
             <>
-              <span className="w-3.5 h-3.5 border-2 border-[#0B1220] border-t-transparent rounded-full animate-spin" />
-              <span>SOLVING CORRIDOR...</span>
+              <span className="w-4 h-4 border-2 border-[#0B1220] border-t-transparent rounded-full animate-spin" />
+              <span>SOLVING SAFE TRAVERSE...</span>
             </>
           ) : (
             <>
@@ -411,9 +388,9 @@ export const LeftControls: React.FC<LeftControlsProps> = ({
           )}
         </button>
 
-        <p className="text-[10px] text-slate-500 text-center mt-2 leading-tight">
-          Click map: set Start (A), then Destination (B).
-        </p>
+        <div className="text-[10px] text-slate-400 text-center font-mono mt-2">
+          Jezero Crater Operational Model • Real 50 Points
+        </div>
       </div>
     </aside>
   );

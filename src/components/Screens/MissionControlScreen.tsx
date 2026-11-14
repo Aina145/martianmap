@@ -20,6 +20,7 @@ import {
   Home,
   CheckCircle,
   AlertCircle,
+  Globe,
 } from 'lucide-react';
 
 interface MissionControlScreenProps {
@@ -38,6 +39,7 @@ interface MissionControlScreenProps {
   onOpenCompare: () => void;
   onOpenHud: () => void;
   onOpenAbout: () => void;
+  onOpenGlobe: () => void;
 }
 
 export const MissionControlScreen: React.FC<MissionControlScreenProps> = ({
@@ -56,6 +58,7 @@ export const MissionControlScreen: React.FC<MissionControlScreenProps> = ({
   onOpenCompare,
   onOpenHud,
   onOpenAbout,
+  onOpenGlobe,
 }) => {
   // Layers state
   const [layers, setLayers] = useState<LayerSettings>({
@@ -72,7 +75,7 @@ export const MissionControlScreen: React.FC<MissionControlScreenProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Map interaction state
-  const [settingMode, setSettingMode] = useState<'start' | 'dest' | 'inspect'>('start');
+  const [settingMode, setSettingMode] = useState<'start' | 'dest' | 'inspect' | 'measure'>('start');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
@@ -195,6 +198,13 @@ export const MissionControlScreen: React.FC<MissionControlScreenProps> = ({
             <span>ASTRONAUT HUD</span>
           </button>
           <button
+            onClick={onOpenGlobe}
+            className="px-3 py-1 rounded text-xs font-mono text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors cursor-pointer flex items-center gap-1"
+          >
+            <Globe className="w-3.5 h-3.5 text-rose-400" />
+            <span>3D MARS GLOBE</span>
+          </button>
+          <button
             onClick={onOpenAbout}
             className="px-2.5 py-1 rounded text-xs font-mono text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors cursor-pointer hidden lg:flex items-center gap-1"
           >
@@ -280,6 +290,7 @@ export const MissionControlScreen: React.FC<MissionControlScreenProps> = ({
           selectedId={selectedId}
           activeRoute={activeRoute}
           graph={graph}
+          onOpenHud={onOpenHud}
         />
       </div>
 

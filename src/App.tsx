@@ -17,12 +17,13 @@ import { MissionControlScreen } from './components/Screens/MissionControlScreen'
 import { CompareRoutesScreen } from './components/Screens/CompareRoutesScreen';
 import { AstronautHudScreen } from './components/Screens/AstronautHudScreen';
 import { DataAboutScreen } from './components/Screens/DataAboutScreen';
+import { MarsGlobe3D } from './components/Globe/MarsGlobe3D';
 
 export default function App() {
-  // Screen Router State
+  // Screen Router State: Default directly to 3D Mars Globe (like explore-mars.esri.com)
   const [activeScreen, setActiveScreen] = useState<
-    'landing' | 'mission-control' | 'compare' | 'hud' | 'about'
-  >('landing');
+    'landing' | 'mission-control' | 'compare' | 'hud' | 'about' | 'globe'
+  >('globe');
 
   // Real terrain graph: 50 nodes, 4 blocked (>15°) excluded
   const graph = useMemo(() => buildGraph(), []);
@@ -68,6 +69,7 @@ export default function App() {
         <LandingScreen
           onStartPlanning={() => setActiveScreen('mission-control')}
           onOpenAbout={() => setActiveScreen('about')}
+          onOpenGlobe={() => setActiveScreen('globe')}
         />
       )}
 
@@ -88,6 +90,7 @@ export default function App() {
           onOpenCompare={() => setActiveScreen('compare')}
           onOpenHud={() => setActiveScreen('hud')}
           onOpenAbout={() => setActiveScreen('about')}
+          onOpenGlobe={() => setActiveScreen('globe')}
         />
       )}
 
@@ -115,6 +118,13 @@ export default function App() {
 
       {activeScreen === 'about' && (
         <DataAboutScreen onBack={() => setActiveScreen('mission-control')} />
+      )}
+
+      {activeScreen === 'globe' && (
+        <MarsGlobe3D
+          onEnterJezero={() => setActiveScreen('mission-control')}
+          onBackToMissionControl={() => setActiveScreen('mission-control')}
+        />
       )}
     </div>
   );
